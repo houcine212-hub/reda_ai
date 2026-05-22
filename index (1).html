@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Reda AI">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Reda AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ====== HEADER ====== -->
+    <header id="app-header">
+      <div class="header-brand">
+        <div class="brand-mark">R</div>
+        <div class="brand-text">
+          <span class="brand-name">REDA</span>
+          <span class="brand-tag">AI</span>
+        </div>
+        <div class="brand-domain">CVC &amp; Câblage</div>
+      </div>
+      <div class="header-actions">
+        <button id="install-btn" class="hdr-btn hidden" title="Installer l'application">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button id="memory-btn" class="hdr-btn" title="Memoire apprise">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+          <span id="memory-badge" class="badge hidden">0</span>
+        </button>
+        <button id="clear-btn" class="hdr-btn" title="Effacer la conversation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6"/>
+            <path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ====== MESSAGES ====== -->
+    <main id="messages-area">
+      <div id="messages-list">
+        <!-- Welcome card - shown only when history is empty -->
+        <div id="welcome-card" class="welcome-card">
+          <div class="welcome-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <h2 class="welcome-title">Salut Reda</h2>
+          <p class="welcome-sub">Professeur personnel CVC et câblage. Pose ton probleme, j'explique la solution direct.</p>
+          <div class="welcome-chips">
+            <span class="chip">Climatiseur en panne</span>
+            <span class="chip">Probleme disjoncteur</span>
+            <span class="chip">Installation gaine</span>
+            <span class="chip">Câblage tableau</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div id="typing-wrap" class="typing-wrap hidden">
+        <div class="typing-bubble">
+          <span class="t-dot"></span>
+          <span class="t-dot"></span>
+          <span class="t-dot"></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== INPUT ====== -->
+    <footer id="input-bar">
+      <!-- Image preview strip (shown when image selected) -->
+      <div id="img-preview-wrap" class="img-preview-wrap hidden">
+        <div id="img-preview-inner" class="img-preview-inner">
+          <img id="img-preview" src="" alt="preview">
+          <button id="img-remove-btn" class="img-remove-btn" title="Supprimer la photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="input-inner">
+        <!-- Hidden file input -->
+        <input type="file" id="img-input" accept="image/*" capture="environment" style="display:none">
+        <button id="img-btn" class="img-attach-btn" title="Envoyer une photo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3" ry="3"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </button>
+        <textarea
+          id="msg-input"
+          placeholder="Ktb mochkilk..."
+          rows="1"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="sentences"
+          spellcheck="false"
+        ></textarea>
+        <button id="send-btn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ====== MEMORY PANEL ====== -->
+  <div id="overlay" class="overlay hidden"></div>
+  <aside id="memory-panel" class="side-panel hidden">
+    <div class="panel-head">
+      <h3 class="panel-title">Memoire</h3>
+      <button id="close-panel-btn" class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="panel-body" id="memory-list">
+      <p class="panel-empty">Aucun fait memorise pour l'instant.</p>
+    </div>
+    <div class="panel-foot">
+      <button id="clear-memory-btn" class="danger-btn">Effacer la memoire</button>
+    </div>
+  </aside>
+
+  <!-- ====== iOS INSTALL HINT ====== -->
+  <div id="ios-hint" class="ios-hint hidden">
+    <div class="ios-hint-inner">
+      <span>Pour installer : appuie sur</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+        <polyline points="16 6 12 2 8 6"/>
+        <line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+      <span>puis "Sur l'écran d'accueil"</span>
+      <button id="close-ios-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
