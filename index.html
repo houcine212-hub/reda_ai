@@ -169,6 +169,96 @@
     </div>
   </div>
 
+  <!-- ====== SPLASH / INSTALL SCREEN ====== -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-inner">
+
+      <!-- Brand -->
+      <div class="splash-brand">
+        <div class="splash-mark">R</div>
+        <div class="splash-brand-row">
+          <span class="splash-name">REDA</span>
+          <span class="splash-tag">AI</span>
+        </div>
+        <div class="splash-domain">CVC &amp; Câblage</div>
+      </div>
+
+      <!-- Icon -->
+      <div class="splash-icon-wrap">
+        <div class="splash-icon-ring"></div>
+        <div class="splash-icon-ring splash-icon-ring-2"></div>
+        <div class="splash-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="splash-text">
+        <h1 class="splash-title">Professeur personnel<br>CVC &amp; Électricité</h1>
+        <p class="splash-sub">Diagnostic de pannes, câblage, installation — répond en darija ou français.</p>
+      </div>
+
+      <!-- Features -->
+      <div class="splash-features">
+        <div class="splash-feat">
+          <span class="splash-feat-icon">⚡</span>
+          <span>Diagnostic rapide</span>
+        </div>
+        <div class="splash-feat">
+          <span class="splash-feat-icon">📷</span>
+          <span>Analyse photo</span>
+        </div>
+        <div class="splash-feat">
+          <span class="splash-feat-icon">🧠</span>
+          <span>Memoire apprise</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="splash-actions">
+        <button id="splash-install-btn" class="splash-install-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Installer l'application
+        </button>
+        <button id="splash-skip-btn" class="splash-skip-btn">Continuer sans installer</button>
+      </div>
+
+    </div>
+
+    <!-- iOS install guide (shown instead of button on iOS) -->
+    <div id="splash-ios-guide" class="splash-ios-guide hidden">
+      <div class="splash-ios-steps">
+        <p class="splash-ios-title">Pour installer sur iPhone :</p>
+        <div class="splash-ios-step">
+          <span class="splash-ios-num">1</span>
+          <span>Appuie sur
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="vertical-align:middle">
+              <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+              <polyline points="16 6 12 2 8 6"/>
+              <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+            en bas du navigateur
+          </span>
+        </div>
+        <div class="splash-ios-step">
+          <span class="splash-ios-num">2</span>
+          <span>Choisis <strong>"Sur l'écran d'accueil"</strong></span>
+        </div>
+        <div class="splash-ios-step">
+          <span class="splash-ios-num">3</span>
+          <span>Appuie sur <strong>"Ajouter"</strong></span>
+        </div>
+      </div>
+      <button id="splash-ios-skip" class="splash-skip-btn" style="margin-top:20px">Continuer quand même</button>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>

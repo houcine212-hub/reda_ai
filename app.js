@@ -682,6 +682,7 @@ const App = {
 
     this._bindEvents();
     this._registerSW();
+    this._initSplash();
     this._handlePWAInstall();
   },
 
@@ -876,31 +877,109 @@ const App = {
     }
   },
 
-  _handlePWAInstall() {
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  /* ---- SPLASH SCREEN ---- */
+  _initSplash() {
+    const splash       = document.getElementById('splash-screen');
+    const installBtn   = document.getElementById('splash-install-btn');
+    const skipBtn      = document.getElementById('splash-skip-btn');
+    const iosGuide     = document.getElementById('splash-ios-guide');
+    const iosSkipBtn   = document.getElementById('splash-ios-skip');
+
+    if (!splash) return;
+
+    const isIOS        = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                       || window.navigator.standalone;
 
-    if (isStandalone) return; // already installed
-
-    if (isIOS) {
-      // Show iOS install hint after 3 seconds
-      setTimeout(() => {
-        UI.els.iosHint.classList.remove('hidden');
-      }, 3000);
+    // Already installed — skip splash entirely
+    if (isStandalone) {
+      splash.classList.add('splash-gone');
       return;
     }
 
-    // Android / Desktop — listen for beforeinstallprompt
+    // iOS — hide install btn, show step guide instead
+    if (isIOS) {
+      installBtn.closest('.splash-actions').classList.add('hidden');
+      iosGuide.classList.remove('hidden');
+      iosSkipBtn.addEventListener('click', () => this._hideSplash(splash));
+      return;
+    }
+
+    // Android / Desktop
+    // Listen for beforeinstallprompt in background
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       this._deferredInstall = e;
-      UI.els.installBtn.classList.remove('hidden');
+      // If user already clicked, fire now
+      if (this._splashInstallPending) {
+        this._splashInstallPending = false;
+        this._doInstallFromSplash(installBtn, splash);
+      }
     });
 
     window.addEventListener('appinstalled', () => {
-      UI.els.installBtn.classList.add('hidden');
       this._deferredInstall = null;
+      this._hideSplash(splash);
+    });
+
+    installBtn.addEventListener('click', () => {
+      if (this._deferredInstall) {
+        this._doInstallFromSplash(installBtn, splash);
+      } else {
+        // Prompt not ready yet — show waiting state and remember click
+        installBtn.classList.add('waiting');
+        installBtn.textContent = 'Préparation...';
+        this._splashInstallPending = true;
+      }
+    });
+
+    skipBtn.addEventListener('click', () => this._hideSplash(splash));
+  },
+
+  _splashInstallPending: false,
+
+  async _doInstallFromSplash(installBtn, splash) {
+    if (!this._deferredInstall) return;
+    try {
+      this._deferredInstall.prompt();
+      const { outcome } = await this._deferredInstall.userChoice;
+      if (outcome === 'accepted') {
+        this._deferredInstall = null;
+        this._hideSplash(splash);
+      } else {
+        // User dismissed — reset button
+        installBtn.classList.remove('waiting');
+        installBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Installer l'application`;
+      }
+    } catch(e) {
+      console.warn('Install prompt error:', e);
+    }
+  },
+
+  _hideSplash(splash) {
+    splash.classList.add('splash-hiding');
+    setTimeout(() => splash.classList.add('splash-gone'), 420);
+  },
+
+  /* Keep header install btn working after splash is dismissed */
+  _handlePWAInstall() {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                      || window.navigator.standalone;
+    if (isStandalone) return;
+
+    // Header install btn — shows only if deferredInstall is ready
+    window.addEventListener('beforeinstallprompt', () => {
+      UI.els.installBtn.classList.remove('hidden');
+    });
+    window.addEventListener('appinstalled', () => {
+      UI.els.installBtn.classList.add('hidden');
     });
   },
 

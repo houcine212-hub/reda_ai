@@ -926,8 +926,313 @@ html, body {
 .img-remove-btn svg { width: 10px; height: 10px; }
 .img-remove-btn:hover { background: var(--red-dim); border-color: var(--red); color: var(--red); }
 
-/* Image thumbnail in user message bubble */
-.msg-img-thumb {
+
+
+/* ========================================================
+   SPLASH / INSTALL SCREEN
+   ======================================================== */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px env(safe-area-inset-bottom, 24px);
+  overflow-y: auto;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#splash-screen.splash-hiding {
+  opacity: 0;
+  transform: scale(0.97);
+  pointer-events: none;
+}
+
+#splash-screen.splash-gone {
+  display: none;
+}
+
+.splash-inner {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  padding-bottom: 12px;
+}
+
+/* Brand row */
+.splash-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.splash-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--amber);
+  color: #0a0a0c;
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.5px;
+  box-shadow: 0 0 0 1px rgba(217,124,10,0.3), 0 8px 24px rgba(217,124,10,0.2);
+}
+
+.splash-brand-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.splash-name {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.splash-tag {
+  font-family: var(--font-brand);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--amber);
+  background: var(--amber-dim);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+
+.splash-domain {
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.5px;
+}
+
+/* Animated icon */
+.splash-icon-wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.splash-icon-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(217,124,10,0.18);
+  animation: splashPulse 3s ease-in-out infinite;
+}
+
+.splash-icon-ring-2 {
+  inset: 12px;
+  border-color: rgba(217,124,10,0.25);
+  animation-delay: 1s;
+}
+
+@keyframes splashPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.06); opacity: 0.6; }
+}
+
+.splash-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.splash-icon svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--amber);
+}
+
+/* Text */
+.splash-text { display: flex; flex-direction: column; gap: 10px; }
+
+.splash-title {
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+
+.splash-sub {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.65;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Feature pills */
+.splash-features {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.splash-feat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 13px;
+  font-size: 12.5px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.splash-feat-icon {
+  font-size: 14px;
+  filter: grayscale(0.3);
+}
+
+/* Buttons */
+.splash-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.splash-install-btn {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: var(--radius);
+  background: var(--amber);
+  border: none;
+  color: #0a0a0c;
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.18s;
+  box-shadow: 0 4px 20px rgba(217,124,10,0.3);
+}
+
+.splash-install-btn:hover,
+.splash-install-btn:active {
+  background: var(--amber-2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(217,124,10,0.4);
+}
+
+.splash-install-btn:active {
+  transform: translateY(0);
+}
+
+.splash-install-btn.waiting {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.splash-skip-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+
+.splash-skip-btn:hover {
+  background: var(--surface-2);
+  color: var(--text-2);
+  border-color: var(--border-2);
+}
+
+/* iOS guide */
+.splash-ios-guide {
+  width: 100%;
+  max-width: 380px;
+  padding: 0 20px 24px;
+}
+
+.splash-ios-guide.hidden { display: none; }
+
+.splash-ios-title {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.splash-ios-steps {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.splash-ios-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-2);
+  text-align: left;
+}
+
+.splash-ios-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--amber);
+  color: #0a0a0c;
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-ios-step strong { color: var(--text); 
   display: block;
   max-width: 220px;
   max-height: 200px;
